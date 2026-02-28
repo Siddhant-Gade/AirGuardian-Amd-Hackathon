@@ -1,0 +1,3 @@
+# placeholder — ml/artifacts/ directory
+# model.pt, scaler.pkl, and feature_columns.json will be generated here after training.
+# Run: python ml/train.py

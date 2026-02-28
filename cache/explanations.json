@@ -1,0 +1,9 @@
+{
+  "Good": "Air quality is currently good and is expected to remain so over the next 6 hours. No action required, but monitoring continues.",
+  "Satisfactory": "Air quality is satisfactory at your campus. Sensitive individuals like asthmatic students should still monitor symptoms as a precaution.",
+  "Moderate": "Predicted AQI will reach Moderate levels within 6 hours — pollutants are accumulating due to stagnant air. Consider postponing outdoor sports and keeping windows closed, especially in hostel and library blocks.",
+  "Poor": "Air quality is predicted to reach Poor levels in 6 hours, driven by low wind speed and a trapped boundary layer below 500m. Avoid all outdoor activities and issue an advisory to students to stay indoors.",
+  "Very Poor": "AQI is predicted to spike to Very Poor levels within 6 hours — trapped pollutants and low winds are concentrating PM2.5 near ground level. Immediately cancel all outdoor events and activate indoor air purifiers in common areas.",
+  "Severe": "A severe AQI spike is expected in 6 hours. Pollutants are critically trapped near the ground. Issue an emergency advisory, cancel all outdoor activities, and ensure N95 masks are available for staff on duty.",
+  "Hazardous": "Hazardous air quality is predicted to hit campus in 6 hours. This is a serious health emergency level. Declare a campus air quality alert, suspend all outdoor operations, and ensure medical support is on standby."
+}
