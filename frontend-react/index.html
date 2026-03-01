@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AirGuardian AI — Predict. Explain. Act.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.12.57/build/spline-viewer.js"></script>
+    <style>
+      /* Prevent FOUC — match base background */
+      html, body { margin: 0; padding: 0; background:black; }
+      /* After splash, JS will set background to #f8fafb */
+      html.loaded, html.loaded body { background: #f8fafb; }
+      /* Hide Spline attribution logo */
+      spline-viewer::part(logo) { display: none !important; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

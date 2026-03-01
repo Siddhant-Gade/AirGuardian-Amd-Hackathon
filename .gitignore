@@ -27,6 +27,10 @@ ml/artifacts/feature_columns.json
 data/raw/*.csv
 data/processed/*.csv
 
+# Frontend
+frontend-react/node_modules/
+frontend-react/dist/
+
 # IDE
 .vscode/
 .idea/
