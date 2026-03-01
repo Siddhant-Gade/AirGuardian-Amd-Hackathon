@@ -18,9 +18,10 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 
-from config import settings
+from config import settings, ROOT_DIR
 from backend.routes import predict, alert, zones, health
 from backend.services.scheduler_service import start_scheduler, stop_scheduler
 from backend.database.db import init_db
@@ -134,10 +135,19 @@ app.include_router(zones.router,   prefix="/api", tags=["Zones"])
 
 
 # ---------------------------------------------------------------------------
-# Root
+# Root — serve React frontend
 # ---------------------------------------------------------------------------
+# Serve React static assets (JS, CSS, etc.)
+react_assets = ROOT_DIR / "frontend-react" / "dist" / "assets"
+if react_assets.exists():
+    app.mount("/assets", StaticFiles(directory=str(react_assets)), name="react-assets")
+
+
 @app.get("/", include_in_schema=False)
 def root():
+    react_index = ROOT_DIR / "frontend-react" / "dist" / "index.html"
+    if react_index.exists():
+        return FileResponse(str(react_index), media_type="text/html")
     return {
         "service" : "AirGuardian AI",
         "version" : "1.1.0",

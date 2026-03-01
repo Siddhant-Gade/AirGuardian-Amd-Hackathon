@@ -1,0 +1,186 @@
+/* ── AirGuardian — Global Styles ── */
+@import "tailwindcss";
+
+/* ── Design Tokens ────────────────────────────────────── */
+:root {
+  /* Surfaces */
+  --color-base: #f5f5f0;
+  --color-surface: #ffffff;
+  --color-surface-2: #fafaf8;
+  --color-surface-3: #f0efeb;
+
+  /* Text */
+  --color-text: #1a1a18;
+  --color-text-2: #3d3d38;
+  --color-muted: #8a8a82;
+  --color-faint: #b8b8b0;
+
+  /* Borders */
+  --color-border: #e4e4dc;
+  --color-border-2: #d0d0c8;
+
+  /* Brand — clean teal-slate */
+  --color-accent: #1d6a5e;
+  --color-accent-2: #24897a;
+  --color-accent-light: rgba(29, 106, 94, 0.07);
+  --color-accent-mid: rgba(29, 106, 94, 0.14);
+
+  /* Status colors */
+  --color-green: #16a34a;
+  --color-amber: #d97706;
+  --color-red: #dc2626;
+  --color-blue: #2563eb;
+
+  /* Typography */
+  --font-display: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "DM Mono", "Fira Code", monospace;
+
+  /* Radii */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+
+  /* Shadows — softer, warmer */
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.08);
+}
+
+/* ── Dark Mode Tokens ────────────────────────────────── */
+[data-theme="dark"] {
+  --color-base: #0d1117;
+  --color-surface: #161b22;
+  --color-surface-2: #1c2128;
+  --color-surface-3: #21262d;
+
+  --color-text: #e6edf3;
+  --color-text-2: #c9d1d9;
+  --color-muted: #8b949e;
+  --color-faint: #484f58;
+
+  --color-border: #30363d;
+  --color-border-2: #3d444e;
+
+  --color-accent: #22c55e;
+  --color-accent-2: #16a34a;
+  --color-accent-light: rgba(34, 197, 94, 0.1);
+  --color-accent-mid: rgba(34, 197, 94, 0.18);
+
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.3);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.35);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.4);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
+}
+
+[data-theme="dark"] body {
+  background: var(--color-base);
+  color: var(--color-text);
+}
+
+[data-theme="dark"] .skeleton {
+  background: linear-gradient(90deg, #21262d 25%, #30363d 50%, #21262d 75%);
+  background-size: 200% 100%;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html { scroll-behavior: smooth; }
+
+/* ── Smooth dark/light mode transitions ── */
+html, html * {
+  transition:
+    background-color 0.35s ease,
+    border-color 0.35s ease,
+    color 0.25s ease,
+    box-shadow 0.35s ease;
+}
+/* But don't transition transforms or opacities (breaks animations) */
+html [data-no-transition] { transition: none !important; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-base);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-border-2); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-muted); }
+
+img, svg { display: block; max-width: 100%; }
+button { cursor: pointer; }
+
+/* ── Skeleton loader ── */
+.skeleton {
+  background: linear-gradient(90deg, #e8e8e0 25%, #f0f0e8 50%, #e8e8e0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+  border-radius: var(--radius-sm);
+}
+@keyframes skeleton-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ── Panel — replaces glassmorphism with clean editorial cards ── */
+.panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+/* ── Stat chip ── */
+.stat-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: var(--radius-xs);
+  letter-spacing: 0.01em;
+}
+
+/* ── Section label ── */
+.section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* ── Leaflet reset ── */
+.leaflet-container {
+  background: #edecea !important;
+  font-family: var(--font-body) !important;
+}
+
+/* keep glass-card alias so child components still work */
+.glass-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+

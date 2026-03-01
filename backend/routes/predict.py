@@ -20,7 +20,7 @@ def predict_zone(
     zone: str = Query(
         ...,
         description=f"Campus zone name. Valid values: {VALID_ZONES}",
-        example="Sports Ground",
+        examples=["Sports Ground"],
     )
 ):
     """
