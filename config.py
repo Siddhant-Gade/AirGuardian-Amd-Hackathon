@@ -80,8 +80,10 @@ EXPLANATION_CACHE  = CACHE_DIR / "explanations.json"
 # ---------------------------------------------------------------------------
 LOOKBACK   = 24   # hours of history used as model input
 HORIZON    = 6    # hours ahead to predict
-INPUT_SIZE = 6    # number of input features
-HIDDEN_SIZE = 64  # GRU hidden units
+INPUT_SIZE  = 6    # number of input features
+HIDDEN_SIZE = 64   # GRU hidden units
+GRU_LAYERS  = 2    # stacked GRU layers
+GRU_DROPOUT = 0.2  # dropout between GRU layers
 
 FEATURE_COLS = [
     "PM2.5",
@@ -108,21 +110,41 @@ AQI_SEVERITY_MAP = [
 AQI_ALERT_THRESHOLD = 200  # trigger alert above this
 
 # ---------------------------------------------------------------------------
-# Campus zones (Nagpur, coordinates)
+# City zones — Nagpur metropolitan area (~80 km spread)
+# These are real geographic locations across the city, enabling meaningful
+# IDW interpolation and a heatmap that covers the full metro region.
 # ---------------------------------------------------------------------------
 ZONES: dict[str, dict] = {
-    "Main Gate"     : {"lat": 21.1458, "lon": 79.0882},
-    "Hostel A"      : {"lat": 21.1462, "lon": 79.0891},
-    "Academic Block": {"lat": 21.1470, "lon": 79.0878},
-    "Library"       : {"lat": 21.1455, "lon": 79.0875},
-    "Sports Ground" : {"lat": 21.1478, "lon": 79.0895},
-    "Parking Area"  : {"lat": 21.1450, "lon": 79.0900},
+    # ── Central Nagpur ──────────────────────────────────────────────────
+    "Sitabuldi"         : {"lat": 21.1466, "lon": 79.0810},
+    "Dharampeth"        : {"lat": 21.1530, "lon": 79.0720},
+    "Sadar"             : {"lat": 21.1560, "lon": 79.0960},
+    "Ambazari Lake"     : {"lat": 21.1330, "lon": 79.0480},
+    "Futala Lake"       : {"lat": 21.1580, "lon": 79.0430},
+    # ── East Nagpur ─────────────────────────────────────────────────────
+    "Wadi"              : {"lat": 21.1300, "lon": 79.1300},
+    "Manewada"          : {"lat": 21.1080, "lon": 79.1100},
+    "Besa"              : {"lat": 21.0950, "lon": 79.1350},
+    # ── West Nagpur ─────────────────────────────────────────────────────
+    "Hingna"            : {"lat": 21.1150, "lon": 78.9800},
+    "Narendra Nagar"    : {"lat": 21.1480, "lon": 79.0200},
+    # ── North Nagpur ────────────────────────────────────────────────────
+    "Kamptee"           : {"lat": 21.2300, "lon": 79.2000},
+    "Koradi"            : {"lat": 21.2450, "lon": 79.0970},
+    "Parseoni"          : {"lat": 21.3800, "lon": 79.1420},
+    # ── South / South-East ──────────────────────────────────────────────
+    "Wardha Road"       : {"lat": 21.0800, "lon": 79.0750},
+    "Butibori"          : {"lat": 20.9700, "lon": 79.0300},
 }
 
-# CPCB monitoring stations used for model inference
+# CPCB / MPCB monitoring stations used for model inference.
+# 5 stations spread across Nagpur give proper spatial coverage for IDW.
 STATIONS: dict[str, dict] = {
-    "Civil Lines": {"lat": 21.1463, "lon": 79.0849},
-    "Ambazari"  : {"lat": 21.1332, "lon": 79.0485},
+    "Civil Lines"       : {"lat": 21.1463, "lon": 79.0849},
+    "Ambazari"          : {"lat": 21.1332, "lon": 79.0485},
+    "MIDC Hingna"       : {"lat": 21.1160, "lon": 78.9740},
+    "Koradi"            : {"lat": 21.2430, "lon": 79.0980},
+    "NEERI Nehru Nagar" : {"lat": 21.1220, "lon": 79.0590},
 }
 
 # ---------------------------------------------------------------------------

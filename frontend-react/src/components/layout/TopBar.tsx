@@ -93,7 +93,7 @@ export default function TopBar({ lastUpdated }: Props) {
         }}
         className="hidden sm:block"
       >
-        Campus Air Quality
+        Nagpur Air Quality
       </span>
 
       {/* Right side */}

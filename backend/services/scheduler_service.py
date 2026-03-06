@@ -39,7 +39,7 @@ def start_scheduler() -> None:
     )
     _scheduler.start()
     logger.info("Scheduler started — predictions every %d minutes.", SCHEDULER_INTERVAL_MINUTES)
-    print(f"⏰ Scheduler started — predictions every {SCHEDULER_INTERVAL_MINUTES} minutes.")
+    print(f"[SCHEDULER] Started -- predictions every {SCHEDULER_INTERVAL_MINUTES} minutes.")
 
 
 def stop_scheduler() -> None:
@@ -51,7 +51,7 @@ def stop_scheduler() -> None:
     if _scheduler is not None and _scheduler.running:
         _scheduler.shutdown(wait=False)
         logger.info("Scheduler stopped gracefully.")
-        print("🛑 Scheduler stopped.")
+        print("[SCHEDULER] Stopped.")
 
 
 def is_scheduler_running() -> bool:
@@ -90,7 +90,7 @@ def run_prediction_cycle() -> None:
     from backend.database.db import save_alert, save_prediction
 
     logger.info("AirGuardian prediction cycle started.")
-    print("🔄 Running AirGuardian prediction cycle...")
+    print("[CYCLE] Running AirGuardian prediction cycle...")
 
     for zone in ZONES:
         try:

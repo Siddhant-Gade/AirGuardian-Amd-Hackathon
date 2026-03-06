@@ -7,6 +7,7 @@ Routes:
 """
 from fastapi import APIRouter, Query, HTTPException
 from backend.services.model_service import get_prediction
+from backend.services.explanation_service import generate_explanation
 from backend.database.db import save_prediction
 from config import ZONES
 
@@ -19,13 +20,13 @@ VALID_ZONES = list(ZONES.keys())
 def predict_zone(
     zone: str = Query(
         ...,
-        description=f"Campus zone name. Valid values: {VALID_ZONES}",
-        examples=["Sports Ground"],
+        description=f"City zone name. Valid values: {VALID_ZONES}",
+        examples=["Sitabuldi"],
     )
 ):
     """
-    Returns the 6-hour ahead AQI prediction for one campus zone.
-    Persists the prediction to the database for later accuracy tracking.
+    Returns the 6-hour ahead AQI prediction for one city zone.
+    Includes AI explanation and persists the prediction to the database.
     """
     if zone not in VALID_ZONES:
         raise HTTPException(
@@ -34,6 +35,12 @@ def predict_zone(
         )
     try:
         result = get_prediction(zone)
+        # Generate AI explanation for this prediction
+        try:
+            explanation = generate_explanation(zone, result)
+            result["explanation"] = explanation
+        except Exception:
+            result["explanation"] = f"AQI predicted at {result['predicted_aqi']} ({result['severity']}) for {zone}."
         # Log prediction for accuracy tracking
         try:
             save_prediction(zone, result)
@@ -44,10 +51,10 @@ def predict_zone(
         raise HTTPException(status_code=500, detail=str(exc))
 
 
-@router.get("/predict/all", summary="Predict AQI for all campus zones (batch)")
+@router.get("/predict/all", summary="Predict AQI for all city zones (batch)")
 def predict_all_zones():
     """
-    Runs predictions for every campus zone sequentially and returns them as a dict.
+    Runs predictions for every city zone sequentially and returns them as a dict.
     Useful for refreshing the dashboard without needing /api/zones IDW interpolation.
     """
     results: dict = {}

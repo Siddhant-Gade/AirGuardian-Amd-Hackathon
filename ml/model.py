@@ -1,7 +1,7 @@
 """
 ml/model.py — AQIPredictor GRU neural network.
 
-Single-layer GRU for 6-hour AQI forecasting.
+2-layer GRU for 6-hour AQI forecasting.
 Input  : (batch_size, 24, 6)  — 24hr lookback, 6 features
 Output : (batch_size,)         — predicted AQI scalar
 """
@@ -10,29 +10,34 @@ from __future__ import annotations
 import torch
 import torch.nn as nn
 
-from config import INPUT_SIZE, HIDDEN_SIZE
+from config import INPUT_SIZE, HIDDEN_SIZE, GRU_LAYERS, GRU_DROPOUT
 
 
 class AQIPredictor(nn.Module):
     """
-    Single-layer GRU for 6-hour AQI forecasting.
+    2-layer stacked GRU for 6-hour AQI forecasting.
 
     Architecture choices:
-    - Single GRU layer — faster training, equivalent performance on this
-      dataset size, easier to debug under hackathon constraints.
+    - 2-layer GRU — captures both short-term fluctuations and longer trends
+    - Dropout between layers — prevents overfitting on training data
     - Huber loss (at training time) — handles AQI spike outliers better
       than MSE.
-    - No Dropout at inference — keep predictions clean for demo.
     """
 
-    def __init__(self, input_size: int = INPUT_SIZE, hidden_size: int = HIDDEN_SIZE) -> None:
+    def __init__(
+        self,
+        input_size: int = INPUT_SIZE,
+        hidden_size: int = HIDDEN_SIZE,
+        num_layers: int = GRU_LAYERS,
+        dropout: float = GRU_DROPOUT,
+    ) -> None:
         super().__init__()
         self.gru = nn.GRU(
             input_size=input_size,
             hidden_size=hidden_size,
-            num_layers=1,
+            num_layers=num_layers,
             batch_first=True,
-            dropout=0.0,
+            dropout=dropout if num_layers > 1 else 0.0,
         )
         self.fc = nn.Linear(hidden_size, 1)
 
@@ -46,3 +51,4 @@ class AQIPredictor(nn.Module):
         out, _ = self.gru(x)          # (batch, LOOKBACK, hidden)
         out = out[:, -1, :]           # take last timestep: (batch, hidden)
         return self.fc(out).squeeze(-1)  # (batch,)
+

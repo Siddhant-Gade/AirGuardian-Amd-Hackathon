@@ -2,7 +2,7 @@
 data_integration/zone_orchestrator.py
 
 Loops all CPCB monitoring stations, runs GRU model inference for each,
-then IDW-interpolates to every campus zone.
+then IDW-interpolates to every city zone across the Nagpur metro area.
 
 Returns: { zone_name : { predicted_aqi, severity, lat, lon } }
 """
@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 def get_all_zone_predictions() -> dict[str, dict]:
     """
     1. Get model prediction for each CPCB monitoring station.
-    2. IDW interpolate to estimate AQI at each campus zone.
+    2. IDW interpolate to estimate AQI at each city zone.
     3. Return zone → { predicted_aqi, severity, lat, lon } map
        (used by frontend Leaflet heatmap).
     """

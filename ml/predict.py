@@ -64,7 +64,7 @@ def _load_artifacts() -> None:
             _feature_columns = json.load(f)
 
         logger.info("GRU model loaded successfully from %s.", MODEL_PATH)
-        print(f"✅ Model loaded: {MODEL_PATH}")
+        print(f"[OK] Model loaded: {MODEL_PATH}")
     except Exception as exc:
         logger.error("Failed to load model artifacts: %s", exc)
         model = None

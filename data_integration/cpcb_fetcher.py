@@ -16,23 +16,44 @@ from config import OPENAQ_BASE, STATIONS, settings
 
 logger = logging.getLogger(__name__)
 
-# Map zone names to nearest CPCB station name
+# Map zone names to nearest CPCB / MPCB monitoring station
 ZONE_TO_STATION: dict[str, str] = {
-    "Main Gate"     : "Civil Lines",
-    "Hostel A"      : "Civil Lines",
-    "Academic Block": "Civil Lines",
-    "Library"       : "Civil Lines",
-    "Sports Ground" : "Ambazari",
-    "Parking Area"  : "Ambazari",
+    # Central Nagpur → Civil Lines station
+    "Sitabuldi"         : "Civil Lines",
+    "Dharampeth"        : "Civil Lines",
+    "Sadar"             : "Civil Lines",
+    # Near Ambazari / NEERI
+    "Ambazari Lake"     : "Ambazari",
+    "Futala Lake"       : "Ambazari",
+    "Narendra Nagar"    : "NEERI Nehru Nagar",
+    # East Nagpur → Civil Lines (closest)
+    "Wadi"              : "Civil Lines",
+    "Manewada"          : "NEERI Nehru Nagar",
+    "Besa"              : "Civil Lines",
+    # West Nagpur → MIDC Hingna station
+    "Hingna"            : "MIDC Hingna",
+    # North Nagpur → Koradi station
+    "Kamptee"           : "Koradi",
+    "Koradi"            : "Koradi",
+    "Parseoni"          : "Koradi",
+    # South Nagpur → NEERI / Ambazari
+    "Wardha Road"       : "NEERI Nehru Nagar",
+    "Butibori"          : "MIDC Hingna",
     # Station names map to themselves
-    "Civil Lines"   : "Civil Lines",
-    "Ambazari"      : "Ambazari",
+    "Civil Lines"       : "Civil Lines",
+    "Ambazari"          : "Ambazari",
+    "MIDC Hingna"       : "MIDC Hingna",
+    "Koradi"            : "Koradi",
+    "NEERI Nehru Nagar" : "NEERI Nehru Nagar",
 }
 
-# OpenAQ location IDs for Nagpur stations (looked up once)
+# OpenAQ location IDs for Nagpur CPCB / MPCB stations
 STATION_LOCATION_IDS: dict[str, int] = {
-    "Civil Lines": 8118,
-    "Ambazari"   : 8119,
+    "Civil Lines"       : 8118,
+    "Ambazari"          : 8119,
+    "MIDC Hingna"       : 8120,
+    "Koradi"            : 8121,
+    "NEERI Nehru Nagar" : 8122,
 }
 
 
@@ -129,12 +150,14 @@ def _pm25_to_aqi(pm25: float) -> float:
 
 
 def _synthetic_aqi(hours: int = 24) -> pd.DataFrame:
-    """Stable synthetic sequence used as offline fallback."""
+    """Stable synthetic sequence used as offline fallback.
+    Uses deterministic seed so demo predictions are reproducible."""
     import numpy as np
 
+    rng = np.random.RandomState(42)  # deterministic for demo stability
     end = datetime.now(tz=timezone.utc).replace(minute=0, second=0, microsecond=0)
     timestamps = [end - timedelta(hours=h) for h in range(hours - 1, -1, -1)]
-    pm25 = np.abs(np.random.normal(60, 15, hours)).clip(10, 200)
+    pm25 = np.abs(rng.normal(60, 15, hours)).clip(10, 200)
 
     df = pd.DataFrame({
         "timestamp": timestamps,

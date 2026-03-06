@@ -43,10 +43,10 @@ logger = logging.getLogger("airguardian")
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # ── startup ──────────────────────────────────────────────────────────
-    logger.info("AirGuardian AI starting up…")
+    logger.info("AirGuardian AI starting up...")
     init_db()
     start_scheduler()
-    logger.info("✅ AirGuardian AI is live and accepting requests.")
+    logger.info("[OK] AirGuardian AI is live and accepting requests.")
     yield
     # ── shutdown ─────────────────────────────────────────────────────────
     stop_scheduler()   # prevent background thread leak on uvicorn --reload
@@ -59,7 +59,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title       = "AirGuardian AI",
     description = (
-        "6-hour AQI spike prediction and intervention system for campus zones. "
+        "6-hour AQI spike prediction and intervention system for city zones. "
         "Uses GRU neural network + IDW spatial interpolation + Gmail notifications."
     ),
     version     = "1.1.0",
@@ -154,6 +154,6 @@ def root():
         "docs"    : "/docs",
         "health"  : "/api/health",
         "zones"   : "/api/zones",
-        "predict" : "/api/predict?zone=Sports Ground",
+        "predict" : "/api/predict?zone=Sitabuldi",
         "notification": "Gmail SMTP (free)",
     }

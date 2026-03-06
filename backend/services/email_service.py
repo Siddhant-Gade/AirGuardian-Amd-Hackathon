@@ -96,7 +96,7 @@ def send_email_alert(zone: str, prediction: dict, explanation: str) -> bool:
         f"  Humidity             : {features.get('humidity', 'N/A')} %\n"
         f"  AQI Trend            : {features.get('aqi_trend', 'N/A')}\n\n"
         f"AirGuardian AI — Predict. Explain. Act.\n"
-        f"Built for AMD Slingshot 2025"
+        f"Built for AMD Slingshot 2026"
     )
 
     # ── Rich HTML body ────────────────────────────────────────────────────
@@ -126,7 +126,7 @@ def send_email_alert(zone: str, prediction: dict, explanation: str) -> bool:
   <div class="container">
     <div class="header">
       <h1>{emoji} AirGuardian Alert</h1>
-      <p>Automated 6-hour AQI spike prediction · AMD Slingshot 2025</p>
+      <p>Automated 6-hour AQI spike prediction · AMD Slingshot 2026</p>
     </div>
     <div class="body">
       <div class="metric">
@@ -150,7 +150,7 @@ def send_email_alert(zone: str, prediction: dict, explanation: str) -> bool:
         <div class="condition-row"><span>📈 AQI Trend</span><span>{features.get('aqi_trend', 'N/A')}</span></div>
       </div>
     </div>
-    <div class="footer">AirGuardian AI — Predict. Explain. Act. &nbsp;|&nbsp; Built for AMD Slingshot 2025</div>
+    <div class="footer">AirGuardian AI — Predict. Explain. Act. &nbsp;|&nbsp; Built for AMD Slingshot 2026</div>
   </div>
 </body>
 </html>

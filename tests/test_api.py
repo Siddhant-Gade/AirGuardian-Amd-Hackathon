@@ -44,7 +44,7 @@ def test_predict_invalid_zone(client):
 
 
 def test_predict_valid_zone(client):
-    resp = client.get("/api/predict?zone=Sports Ground")
+    resp = client.get("/api/predict?zone=Sitabuldi")
     assert resp.status_code == 200
     body = resp.json()
     assert "predicted_aqi"  in body
@@ -85,7 +85,7 @@ def test_alerts_history_limit_too_high(client):
 
 
 def test_alerts_by_zone_valid(client):
-    resp = client.get("/api/alerts/zone?zone=Sports Ground&limit=5")
+    resp = client.get("/api/alerts/zone?zone=Sitabuldi&limit=5")
     assert resp.status_code == 200
     assert isinstance(resp.json(), list)
 
@@ -117,7 +117,7 @@ def test_alert_valid_zone(client):
     If Gmail is not configured the email just skips (success=False)
     but the prediction and explanation should still work.
     """
-    resp = client.post("/api/alert", json={"zone": "Library"})
+    resp = client.post("/api/alert", json={"zone": "Dharampeth"})
     assert resp.status_code == 200
     body = resp.json()
     assert "predicted_aqi" in body

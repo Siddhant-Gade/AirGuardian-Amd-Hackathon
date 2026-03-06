@@ -78,7 +78,7 @@ def pre_generate_cache() -> None:
         pred = {**dummy_prediction_base, "predicted_aqi": aqi_map[sev], "severity": sev}
         text = generate_explanation("Campus", pred)
         logger.info("Cached explanation for %s: %s", sev, text[:60])
-    print("✅ Explanation cache pre-generated.")
+    print("[OK] Explanation cache pre-generated.")
 
 
 # ---------------------------------------------------------------------------

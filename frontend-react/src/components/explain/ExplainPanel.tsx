@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { AlertEntry } from "../../types";
+import { fetchPrediction } from "../../api/client";
 
 interface Props {
   selectedZone: string | null;
@@ -27,11 +28,36 @@ function useTypewriter(text: string, speed = 18) {
 }
 
 export default function ExplainPanel({ selectedZone, alerts }: Props) {
-  const explanation = useMemo(() => {
+  const [liveExplanation, setLiveExplanation] = useState<string | null>(null);
+
+  // First try to find an explanation from existing alert history
+  const alertExplanation = useMemo(() => {
     if (!selectedZone || !alerts.length) return null;
     return alerts.find((a) => a.zone === selectedZone)?.explanation ?? null;
   }, [selectedZone, alerts]);
 
+  // If no alert explanation exists, fetch a live one from the predict API
+  useEffect(() => {
+    if (alertExplanation || !selectedZone) {
+      setLiveExplanation(null);
+      return;
+    }
+    let cancelled = false;
+    fetchPrediction(selectedZone)
+      .then((result) => {
+        if (!cancelled && result.explanation) {
+          setLiveExplanation(result.explanation);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setLiveExplanation(`Prediction data is being loaded for ${selectedZone}. Please try again shortly.`);
+        }
+      });
+    return () => { cancelled = true; };
+  }, [selectedZone, alertExplanation]);
+
+  const explanation = alertExplanation ?? liveExplanation;
   const displayed = useTypewriter(explanation ?? "", 14);
 
   return (
@@ -114,7 +140,7 @@ export default function ExplainPanel({ selectedZone, alerts }: Props) {
                 style={{ color: "var(--color-muted)", fontFamily: "var(--font-body)" }}
               >
                 {selectedZone
-                  ? "No AI explanation available yet."
+                  ? "Loading AI analysis..."
                   : "Select a zone to view AI analysis."}
               </p>
             </motion.div>

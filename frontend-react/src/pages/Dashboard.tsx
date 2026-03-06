@@ -69,9 +69,8 @@ function PanelHeader({ title, action }: { title: string; action?: React.ReactNod
 }
 
 export default function Dashboard() {
-  const { zones, loading: zonesLoading, lastUpdated, isDemo: zoneDemoMode } = useZones();
-  const { alerts, loading: alertsLoading, isDemo: alertDemoMode } = useAlertHistory();
-  const isDemoMode = zoneDemoMode || alertDemoMode;
+  const { zones, loading: zonesLoading, lastUpdated } = useZones();
+  const { alerts, loading: alertsLoading } = useAlertHistory();
   const [selectedZone, setSelectedZone] = useState<string | null>(null);
 
   const zoneEntries = zones ? Object.entries(zones) : [];
@@ -117,27 +116,6 @@ export default function Dashboard() {
         }}
       >
 
-        {/* ── Demo mode notice ── */}
-        {isDemoMode && (
-          <div style={{
-            background: "#fffbeb",
-            border: "1px solid #fcd34d",
-            borderLeft: "4px solid #f59e0b",
-            borderRadius: 8,
-            padding: "10px 16px",
-            display: "flex",
-            alignItems: "center",
-            gap: 10,
-            fontSize: 15,
-          }}>
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="#f59e0b">
-              <path d="M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13ZM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8Zm8-3.5a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 8 4.5Zm0 7a.875.875 0 1 1 0-1.75.875.875 0 0 1 0 1.75Z"/>
-            </svg>
-            <span style={{ color: "#92400e" }}>
-              <strong style={{ fontWeight: 700 }}>Demo Mode</strong> — showing realistic sample data. Start the backend to see live predictions.
-            </span>
-          </div>
-        )}
 
         {/* ── Page heading ── */}
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", paddingBottom: 4 }}>
@@ -146,7 +124,7 @@ export default function Dashboard() {
               Air Quality Dashboard
             </h1>
             <p style={{ fontSize: 15, color: "var(--color-muted)", marginTop: 4 }}>
-              Real-time monitoring across {zoneEntries.length} campus zones
+              Real-time monitoring across {zoneEntries.length} city zones
             </p>
           </div>
           {lastUpdated && (
@@ -179,7 +157,7 @@ export default function Dashboard() {
               boxShadow: "var(--shadow-xs)",
             }}
           >
-            <PanelHeader title="Campus Map" />
+            <PanelHeader title="Nagpur City Map" />
             <div style={{ height: "clamp(320px, 44vh, 480px)" }}>
               {zonesLoading && !zones ? (
                 <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center" }}>

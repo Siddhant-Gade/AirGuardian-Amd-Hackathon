@@ -15,7 +15,7 @@ interface Props {
 function FlyTo({ lat, lon }: { lat: number; lon: number }) {
   const map = useMap();
   useEffect(() => {
-    map.flyTo([lat, lon], 17, { duration: 0.8 });
+    map.flyTo([lat, lon], 13, { duration: 0.8 });
   }, [lat, lon, map]);
   return null;
 }
@@ -54,14 +54,14 @@ export default function CampusMap({ zones, selectedZone, onSelectZone }: Props) 
           pointer-events: none;
         }
         .zone-label-aqi {
-          font-size: 13px;
+          font-size: 12px;
           font-weight: 800;
           font-family: -apple-system, sans-serif;
           line-height: 1;
           text-shadow: 0 1px 3px rgba(0,0,0,0.25);
         }
         .zone-label-name {
-          font-size: 10px;
+          font-size: 9px;
           font-weight: 600;
           font-family: -apple-system, sans-serif;
           background: rgba(255,255,255,0.92);
@@ -75,8 +75,8 @@ export default function CampusMap({ zones, selectedZone, onSelectZone }: Props) 
       `}</style>
 
       <MapContainer
-        center={[21.1463, 79.0885]}
-        zoom={16}
+        center={[21.15, 79.08]}
+        zoom={11}
         style={{ width: "100%", height: "100%" }}
         zoomControl={true}
         attributionControl={false}
@@ -92,13 +92,12 @@ export default function CampusMap({ zones, selectedZone, onSelectZone }: Props) 
           const colors = getSeverityColor(data.severity);
           const isSelected = selectedZone === name;
           const aqi = Math.round(data.predicted_aqi);
-          const isAlert = aqi >= 200;
 
           return (
             <CircleMarker
               key={name}
               center={[data.lat, data.lon]}
-              radius={isSelected ? 20 : 15}
+              radius={isSelected ? 14 : 10}
               pathOptions={{
                 fillColor: colors.dot,
                 fillOpacity: isSelected ? 1 : 0.85,
@@ -111,7 +110,7 @@ export default function CampusMap({ zones, selectedZone, onSelectZone }: Props) 
               <Tooltip
                 permanent
                 direction="top"
-                offset={[0, -(isSelected ? 22 : 17)]}
+                offset={[0, -(isSelected ? 16 : 12)]}
                 className="zone-tooltip"
               >
                 <div className="zone-label">
@@ -121,9 +120,7 @@ export default function CampusMap({ zones, selectedZone, onSelectZone }: Props) 
                   >
                     {aqi}
                   </span>
-                  {isSelected && (
-                    <span className="zone-label-name">{name}</span>
-                  )}
+                  <span className="zone-label-name">{name}</span>
                 </div>
               </Tooltip>
             </CircleMarker>
@@ -152,10 +149,10 @@ export default function CampusMap({ zones, selectedZone, onSelectZone }: Props) 
           }}
         >
           {[
-            { label: "Good",         color: "#22c55e" },
-            { label: "Moderate",     color: "#eab308" },
-            { label: "Poor",         color: "#f97316" },
-            { label: "Very Poor",    color: "#ef4444" },
+            { label: "Good", color: "#22c55e" },
+            { label: "Moderate", color: "#eab308" },
+            { label: "Poor", color: "#f97316" },
+            { label: "Very Poor", color: "#ef4444" },
           ].map(({ label, color }) => (
             <div key={label} style={{ display: "flex", alignItems: "center", gap: 5 }}>
               <div style={{ width: 10, height: 10, borderRadius: "50%", background: color, flexShrink: 0 }} />
@@ -167,3 +164,4 @@ export default function CampusMap({ zones, selectedZone, onSelectZone }: Props) 
     </div>
   );
 }
+

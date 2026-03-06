@@ -28,9 +28,9 @@ from ml.feature_scaler import fit_and_save
 from ml.sequence_generator import build_sequences, train_val_split
 
 ARTIFACTS_DIR = Path(ML_ARTIFACTS_DIR)
-EPOCHS        = 50
+EPOCHS        = 100
 BATCH_SIZE    = 64
-LR            = 1e-3
+LR            = 5e-4
 
 
 def train() -> None:

@@ -54,7 +54,7 @@ def init_db() -> None:
             );
         """)
     logger.info("Database initialised at %s.", DB_PATH)
-    print(f"🗄  Database initialised: {DB_PATH}")
+    print(f"[DB] Database initialised: {DB_PATH}")
 
 
 # ---------------------------------------------------------------------------
